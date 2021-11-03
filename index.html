@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>SQLite Bookmarks</title>
+        <style type="text/css">
+        body { background-color: white; color: black; font-family: sans-serif; }
+        #bookmarksview { margin-top: 1.0em; }
+        #bookmarkIt { margin-top: 0.5em; }
+        #bookmarks { border: thin dotted; }
+        #data-entry2 { margin-top: 0.25em; }
+        #tagging, #expiration { display: inline; }
+        td {
+            background-color: white; color: black; padding-left: 0.5em;
+            padding-right: 0.5em;
+        }
+        th {
+            background-color: lightgrey; padding-left: 0.5em; padding-right: 0.5em;
+        }
+        td, th { text-align: left; }
+        tfoot { color: darkgrey; }
+        </style>
+    </head>
+    <body onload="initializeBookmarksView()" onunload="cleanup()">
+        <h1 style="display:none;">SQLite Bookmarks</h1>
+        <header>
+<!-- add bookmark -->
+            <section id="data-entry">
+                <h2 style="display:none;">Data Entry</h2>
+                <section id="data-entry1">
+                    <h3 style="display:none;">URL and Optional Tagging</h3>
+                    <input id="new-bookmark" placeholder="url" type="url" size="50"
+                        oninput="setUrl()" />
+                    <div id="tagging">
+                        <input id="tag" list="tags" placeholder="tag" type="text" size="10" />
+                        <datalist id="tags">
+                        </datalist>
+                        <button id="tagIt" onclick="saveTag()">+</button>
+                    </div>
+                </section>
+                <section id="data-entry2">
+                    <h3 style="display:none;">Optional Expiration</h3>
+                    Expires
+                    <div id="expiration">
+                        <input name="expires" type="radio" value="week" checked="checked"
+                            onclick="setExpiration('week')">in a week
+                        <input name="expires" type="radio" value="month"
+                            onclick="setExpiration('month')">in a month
+                        <input name="expires" type="radio" value="year"
+                            onclick="setExpiration('year')">in a year
+                        <input name="expires" type="radio" value="never"
+                            onclick="setExpiration('never')">never
+                    </div>
+                </section>
+                <button id="bookmarkIt" disabled onclick="saveBookmark()">
+                bookmark
+                </button>
+            </section><!-- data-entry -->
+        </header>
+        <section id="bookmarksview">
+<!-- display list of bookmarks -->
+            <h2 style="display:none;">Bookmarks</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th>
+                            <a href="#" onclick="setSortOption('url')">url</a>
+                        </th>
+                        <th>
+                            <a href="#" onclick="setSortOption('creationDate')">date bookmarked</a>
+                        </th>
+                        <th>
+                            <a href="#" onclick="setSortOption('expirationDate')">expiration date</a>
+                        </th>
+                        <th>
+                            <input id="filter" list="choices" placeholder="tags" type="text" size="10" />
+                            <datalist id="choices">
+                            </datalist>
+                            <button id="filterIt" onclick="setFilterOption(getFilterOption())">=</button>
+                        </th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th>url</th><th>date bookmarked</th><th>expiration date</th><th>tags</th>
+                    </tr>
+                </tfoot>
+                <tbody id="bookmarks">
+                </tbody>
+            </table>
+        </section>
+        <footer>
+<!-- delete controls -->
+        </footer>
+        <script src="sql.js"></script>
+        <script src="bower_components/simpleStorage/simpleStorage.js"></script>
+        <script src="bookmarks.js"></script>
+        <script src="ui.js"></script>
+    </body>
+</html>
